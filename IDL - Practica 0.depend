@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1617464400 source:c:\users\alejandro mejía\onedrive\documents\unlp\2021\semestre i\idl\práctica\practica 0\idl - practica 0\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
