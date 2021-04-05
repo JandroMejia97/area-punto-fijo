@@ -45,6 +45,7 @@ void dividirCadena(char *strEntrada, char *strParteEntera, char *strParteDecimal
 unsigned long long calcularArea(unsigned int radio);
 double calcularAreaReal(char * cadena);
 unsigned long long multiplicarU1617(unsigned int a, unsigned int b);
+unsigned long long multiplicarU1617U3034(unsigned int a, unsigned long long b);
 char * puntoFijoU1517AString(unsigned int numero);
 char * puntoFijoU3034AString(unsigned long long numero);
 void ejecutarPruebas();
@@ -168,9 +169,9 @@ int validarRadio(const char * cadena, unsigned int radio) {
 
 unsigned long long calcularArea(unsigned int radioPF) {
     // PI * RADIO
-    unsigned int piXRadio = multiplicarU1617(PI_PF, radioPF) / FACTOR_ESCALA_OPERANDOS;
+    unsigned long long piXRadio = multiplicarU1617(PI_PF, radioPF) / FACTOR_ESCALA_OPERANDOS;
     // PI * RADIO * RADIO
-    unsigned long long resultado = multiplicarU1617(piXRadio, radioPF);
+    unsigned long long resultado = multiplicarU1617U3034(radioPF, piXRadio);
     return resultado;
 }
 
@@ -184,13 +185,17 @@ unsigned long long multiplicarU1617(unsigned int a, unsigned int b) {
     return (unsigned long long) a * b;
 }
 
+unsigned long long multiplicarU1617U3034(unsigned int a, unsigned long long b) {
+    return (unsigned long long) a * b;
+}
+
 char * puntoFijoU1517AString(unsigned int numero) {
     unsigned int parteEntera = numero >> BITS_PARTE_DECIMAL_OPERANDOS;
     numero &= PARTE_DECIMAL_OPERANDOS_MASCARA;
     rotarDerecha(&numero, BASE_DECIMAL, 5);
     unsigned int parteDecimal = (unsigned int) numero / FACTOR_ESCALA_OPERANDOS;
     char *outputString = (char*)malloc(11 * sizeof(char));
-    sprintf(outputString, "%d.%05d", parteEntera, parteDecimal);
+    sprintf(outputString, "%5d.%05d", parteEntera, parteDecimal);
     return outputString;
 }
 
@@ -200,7 +205,7 @@ char * puntoFijoU3034AString(unsigned long long numero) {
     rotarDerechaLong(&numero, BASE_DECIMAL, 10);
     unsigned long long parteDecimal = (unsigned long long) numero / FACTOR_ESCALA_RESULTADO;
     char *outputString = (char*)malloc(21 * sizeof(char));
-    sprintf(outputString, "%lu.%010llu", parteEntera, parteDecimal);
+    sprintf(outputString, "%10lu.%010llu", parteEntera, parteDecimal);
     return outputString;
 }
 
@@ -225,7 +230,7 @@ void ejecutarPruebas() {
         areaCalculada = calcularArea(*radioPF);
         double areaReal = calcularAreaReal(cadenas[i]);
         cadenaAreaCalculada = puntoFijoU3034AString(areaCalculada);
-        printf("%d. RADIO: %s SUPERFICIE: %s ERROR DEL CALCULO: %s %%\n", i + 1, puntoFijoU1517AString(*radioPF), cadenaAreaCalculada , calcularErrorRelativo(cadenaAreaCalculada, areaReal));
+        printf("%d. RADIO: %s \tSUPERFICIE: %s \tERROR DEL CALCULO: %s %%\n", i + 1, puntoFijoU1517AString(*radioPF), cadenaAreaCalculada , calcularErrorRelativo(cadenaAreaCalculada, areaReal));
     }
 }
 
@@ -241,7 +246,7 @@ char * calcularErrorRelativo(char * strValorCalculado, double valorReal) {
     double valorCalculado = strtod(strValorCalculado, &ptr);
     double error = fabs(valorCalculado - valorReal) * 100 / valorReal;
     char *outputString = (char*)malloc(21 * sizeof(char));
-    sprintf(outputString, "%.5f", error);
+    sprintf(outputString, "%2.5f", error);
     return outputString;
 }
 
